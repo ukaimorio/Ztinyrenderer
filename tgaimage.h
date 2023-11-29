@@ -37,6 +37,12 @@ struct TGAColor {
         bgra[2] = R;
         bgra[3] = A;
 	}
+    TGAColor(unsigned char R,unsigned char G,unsigned char B):bgra(),bytespp(3)
+	{
+		bgra[0] = B;
+        bgra[1] = G;
+        bgra[2] = R;
+	}
 	TGAColor(unsigned char v):bgra(),bytespp(1)
 	{
         for (int i=0;i<4;i++) bgra[i]=0;
@@ -69,8 +75,6 @@ struct TGAColor {
         for (int i=0;i<4;i++) result.bgra[i]=bgra[i]+rhs.bgra[i];
         return result;
 	}
-
-
 };
 
 class TGAImage {

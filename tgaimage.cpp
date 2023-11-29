@@ -23,7 +23,7 @@ TGAImage::~TGAImage() {
     if (data) delete [] data;
 }
 
-TGAImage & TGAImage::operator =(const TGAImage &img) {
+TGAImage& TGAImage::operator =(const TGAImage &img) {
     if (this != &img) {
         if (data) delete [] data;
         width  = img.width;

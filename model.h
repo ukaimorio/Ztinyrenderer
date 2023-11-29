@@ -3,20 +3,27 @@
 
 #include <vector> 
 #include "geometry.h"
+#include "tgaimage.h"
 
 class Model{
     private:
     std::vector<Vec3f> verts_;
-    std::vector<std::vector<int>> faces_;
-    std::vector<Vec3f> texture_;
+    std::vector<std::vector<Vec3i>> faces_;
+    std::vector<Vec3f> norms_;
+    std::vector<Vec2f> uv_;
+    TGAImage diffusemap_,normalmap_,specularmap_;
+    void load_texture(std::string filename,const char *suffix,TGAImage &img);
     public:
     Model(const char *nameflie);
     ~Model();
     int nverts();
     int nfaces();
-    int ntexture();
+    Vec3f normal(int iface,int nthvert);
+    Vec3f normal(Vec2f uvf);
+    Vec3f vert(int iface,int nthver);
     Vec3f vert(int i);
-    std::vector<int> face(int index);
-    Vec3f uv(int i);
+    Vec2f uv(int iface,int nthver);
+    TGAColor diffuse(Vec2f uvf);
+    float  specular(Vec2f uvf);
 };
 #endif //__MODEL_H__ 
