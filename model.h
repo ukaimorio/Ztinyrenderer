@@ -11,7 +11,7 @@ class Model{
     std::vector<std::vector<Vec3i>> faces_;
     std::vector<Vec3f> norms_;
     std::vector<Vec2f> uv_;
-    TGAImage diffusemap_,normalmap_,specularmap_,glow_;
+    TGAImage diffusemap_,normalmap_,specularmap_;
     void load_texture(std::string filename,const char *suffix,TGAImage &img);
     public:
     Model(const char *nameflie);
@@ -24,7 +24,6 @@ class Model{
     Vec3f vert(int i);
     Vec2f uv(int iface,int nthver);
     TGAColor diffuse(Vec2f uvf);
-    float specular(Vec2f uvf);
-    TGAColor glow(Vec2f uvf); 
+    float  specular(Vec2f uvf);
 };
 #endif //__MODEL_H__ 

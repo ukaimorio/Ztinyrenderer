@@ -10,7 +10,7 @@ float *shadowbuffer=NULL;
 const int width=800;
 const int height=800;
 Vec3f light_dir(1,1,1);
-Vec3f       eye(1,1,0);
+Vec3f       eye(1,1,4);
 Vec3f    center(0,0,0);
 Vec3f        up(0,1,0);
 struct Shader:public IShader{
@@ -37,15 +37,16 @@ struct Shader:public IShader{
 		int idx=int(shadow_coods[0])+int(shadow_coods[1])*width;
 		float shadow_depth=.3+.7*(shadowbuffer[idx]<shadow_coods[2]);
 		Vec2f uv=varying_uv*bar;
-		Vec3f n=proj<3,4,float>(uniform_MIT*embed<4,3,float>(model->normal(uv))).normalize();
-		Vec3f l=proj<3,4,float>(uniform_M*embed<4,3,float>(light_dir)).normalize();
-		Vec3f v=proj<3,4,float>(uniform_M*embed<4,3,float>(eye)).normalize();
+		Vec3f n=proj<3,4,float>((Projection*ModelView).invert_transpose()*embed<4,3,float>(model->normal(uv))).normalize();
+		Vec3f l=proj<3,4,float>(Projection*ModelView*embed<4,3,float>(light_dir)).normalize();
+		Vec3f v=proj<3,4,float>(Projection*ModelView*embed<4,3,float>(eye)).normalize();
 		Vec3f h=((v+l)/(v.norm()+l.norm())).normalize();
-		float spec=pow(n*h,model->specular(uv)+1000);
+		float spec=pow(n*h,model->specular(uv));
 		float diff=std::max(0.f,n*l);
 		TGAColor amb=TGAColor(20,20,20);
 		TGAColor c=model->diffuse(uv);
-		color=amb+c*0.5*diff*shadow_depth+c*0.6*spec*shadow_depth;
+		color=amb+c*1.2*diff*shadow_depth+c*.55*spec*shadow_depth;
+		return false;
 		return false;
 	}
 };
