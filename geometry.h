@@ -122,7 +122,7 @@ template <size_t DimRows,size_t DimCols,typename T> class mat{
     vec<DimRows,T> col(const size_t idx) const {
         assert(idx<DimCols);
         vec<DimRows,T> ret;
-        for (size_t i=DimRows; i--; ret[i]=rows[i][idx]);
+        for (size_t i=DimRows; i--;ret[i]=rows[i][idx]);
         return ret;
     }
 
@@ -185,7 +185,7 @@ template <size_t DimRows,size_t DimCols,typename T> class mat{
         return ret/tmp;
     }
 
-    /*mat<DimRows,DimCols,T> invert()
+    mat<DimRows,DimCols,T> invert()
     {
         return invert_transpose().transpose();
     }
@@ -195,7 +195,7 @@ template <size_t DimRows,size_t DimCols,typename T> class mat{
         mat<DimCols,DimRows,T> ret;
         for (size_t i=0;i<DimCols;i++) ret[i]=this->col(i);
         return ret;
-    }*/
+    }
 };
 
 template<size_t DimRows,size_t DimCols,typename T> vec<DimRows,T> operator *(const mat<DimRows,DimCols,T>& lhs,const vec<DimCols,T> rhs)
@@ -219,6 +219,16 @@ template<size_t R1,size_t C1,size_t C2,typename T>mat<R1,C2,T> operator*(const m
         }
     }
     return result;
+}
+
+template<size_t DimRows,size_t DimCols,typename T> mat<DimRows,DimCols,T> operator *(const mat<DimRows,DimCols,T> &lhs,const T& rhs)
+{
+    mat<DimRows,DimCols,T> ret;
+    for (size_t i=0;i<DimRows;i++)
+    {
+        for (size_t j=0;j<DimCols;j++) ret[i][j]=lhs[i][j]*rhs; 
+    }
+    return ret;
 }
 
 template<size_t DimRows,size_t DimCols,typename T> mat<DimRows,DimCols,T> operator /(const mat<DimRows,DimCols,T> &lhs,const T& rhs)
